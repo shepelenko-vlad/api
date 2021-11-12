@@ -1,8 +1,10 @@
 const response = require('./../response')
 
 const dbConnection = require('./../settings/dbConnection')
+const setHeaders = require('./../settings/setHeaders')
 
 exports.getServices = (req, res) => {
+    setHeaders(res)
     dbConnection.query('SELECT * FROM service', (error, row, fields) => {
         if(error){
             console.log(error)
@@ -15,11 +17,12 @@ exports.getServices = (req, res) => {
 }
 
 exports.insertService = (req, res) => {
+    setHeaders(res)
     const sqlQuery = "INSERT INTO service (SerCatID, ServiceName, ServicePrice, ServiceDescription) " 
-                    +"VALUES (" + req.query.SerCatID + ", '" 
-                                + req.query.ServiceName + "', " 
-                                + req.query.ServicePrice + ", '" 
-                                + req.query.ServiceDescription + "')";
+                    +"VALUES (" + req.body.SerCatID + ", '" 
+                                + req.body.ServiceName + "', " 
+                                + req.body.ServicePrice + ", '" 
+                                + req.body.ServiceDescription + "')";
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error)
@@ -31,11 +34,12 @@ exports.insertService = (req, res) => {
 }
 
 exports.updateService = (req, res) => {
-    const sqlQuery = "UPDATE service SET SerCatID = " + req.query.SerCatID 
-                                   + ", ServiceName = '" + req.query.ServiceName 
-                                   + "', ServicePrice = " + req.query.ServicePrice
-                                   + ", ServiceDescription = '" + req.query.ServiceDescription 
-                                   + "' WHERE ServiceID = " + req.query.ServiceID 
+    setHeaders(res)
+    const sqlQuery = "UPDATE service SET SerCatID = " + req.body.SerCatID 
+                                   + ", ServiceName = '" + req.body.ServiceName 
+                                   + "', ServicePrice = " + req.body.ServicePrice
+                                   + ", ServiceDescription = '" + req.body.ServiceDescription 
+                                   + "' WHERE ServiceID = " + req.body.ServiceID 
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error)
@@ -47,7 +51,8 @@ exports.updateService = (req, res) => {
 }
 
 exports.deleteService = (req, res) => {
-    const sqlQuery = "DELETE FROM service WHERE ServiceID = " + req.query.ServiceID
+    setHeaders(res)
+    const sqlQuery = "DELETE FROM service WHERE ServiceID = " + req.body.ServiceID
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error)

@@ -1,7 +1,7 @@
 exports.status = (values, res) => {
     const data = {
         "status" : 200,
-        "values" : values
+         values
     }
     
     res.json(data)

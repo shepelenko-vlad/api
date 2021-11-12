@@ -1,8 +1,10 @@
 const response = require('./../response')
 
 const dbConnection = require('./../settings/dbConnection')
+const setHeaders = require('./../settings/setHeaders')
 
 exports.getClients = (req, res) => {
+    setHeaders(res)
     dbConnection.query('SELECT * FROM clients', (error, row, fields) => {
         if(error){
             console.log(error);
@@ -15,11 +17,12 @@ exports.getClients = (req, res) => {
 }
 
 exports.insertClient = (req, res) => {
+    setHeaders(res)
     const sqlQuery = "INSERT INTO clients (ClientPetID, ClientFIO, ClientAdress, ClientPhone) " 
-                   + "VALUES (" + req.query.ClientPetID + ", '" 
-                                + req.query.ClientFIO + "', '" 
-                                + req.query.ClientAdress + "', '" 
-                                + req.query.ClientPhone + "')"
+                   + "VALUES (" + req.body.ClientPetID + ", '" 
+                                + req.body.ClientFIO + "', '" 
+                                + req.body.ClientAdress + "', '" 
+                                + req.body.ClientPhone + "')"
     dbConnection.query(sqlQuery, (error, results) => {
         if(error) {
             console.log(error);
@@ -31,7 +34,12 @@ exports.insertClient = (req, res) => {
 }
 
 exports.updateClient = (req, res) => {
-    const sqlQuery = "UPDATE clients SET ClientPetID = " + req.query.ClientPetID + ", ClientFIO = '" + req.query.ClientFIO + "', ClientAdress = '" + req.query.ClientAdress + "', ClientPhone = '" + req.query.ClientPhone + "' WHERE ClientID = " + req.query.ClientID + "";
+    setHeaders(res)
+    const sqlQuery = "UPDATE clients SET ClientPetID = " + req.body.ClientPetID + 
+                     ", ClientFIO = '" + req.body.ClientFIO + 
+                     "', ClientAdress = '" + req.body.ClientAdress + 
+                     "', ClientPhone = '" + req.body.ClientPhone + 
+                     "' WHERE ClientID = " + req.body.ClientID + "";
     dbConnection.query(sqlQuery, (error, results) => {
         if(error) {
             console.log(error);
@@ -43,7 +51,8 @@ exports.updateClient = (req, res) => {
 }
 
 exports.deleteClient = (req, res) => {
-    const sqlQuery = "DELETE FROM clients WHERE ClientID = " + req.query.ClientID;
+    setHeaders(res)
+    const sqlQuery = "DELETE FROM clients WHERE ClientID = " + req.body.ClientID;
     dbConnection.query(sqlQuery, (error, results) => {
         if(error) {
             console.log(error)

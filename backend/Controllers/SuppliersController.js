@@ -1,8 +1,10 @@
 const response = require('./../response')
 
 const dbConnection = require('./../settings/dbConnection')
+const setHeaders = require('./../settings/setHeaders')
 
 exports.getSuppliers = (req, res) => {
+    setHeaders(res)
     dbConnection.query("SELECT * FROM supplier", (error, row, fields) => {
         if(error){
             console.log(error)
@@ -15,10 +17,11 @@ exports.getSuppliers = (req, res) => {
 }
 
 exports.insertSupplier = (req, res) => {
+    setHeaders(res)
     const sqlQuery = "INSERT INTO supplier (SupplierName, SupplierLOB, SupplierPhone) "
-                   + "VALUES ('" + req.query.SupplierName + "', '" 
-                                 + req.query.SupplierLOB + "', '" 
-                                 + req.query.SupplierPhone + "')"
+                   + "VALUES ('" + req.body.SupplierName + "', '" 
+                                 + req.body.SupplierLOB + "', '" 
+                                 + req.body.SupplierPhone + "')"
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error)
@@ -30,10 +33,11 @@ exports.insertSupplier = (req, res) => {
 }
 
 exports.updateSupplier = (req, res) => {
-    const sqlQuery = "UPDATE supplier SET SupplierName = '" + req.query.SupplierName
-                   + "', SupplierLOB = '" + req.query.SupplierLOB 
-                   + "', SupplierPhone = '" + req.query.SupplierPhone
-                   + "' WHERE SupplierID = " + req.query.SupplierID
+    setHeaders(res)
+    const sqlQuery = "UPDATE supplier SET SupplierName = '" + req.body.SupplierName
+                   + "', SupplierLOB = '" + req.body.SupplierLOB 
+                   + "', SupplierPhone = '" + req.body.SupplierPhone
+                   + "' WHERE SupplierID = " + req.body.SupplierID
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error)
@@ -45,7 +49,8 @@ exports.updateSupplier = (req, res) => {
 }
 
 exports.deleteSupplier = (req, res) => {
-    const sqlQuery = "DELETE FROM supplier WHERE SupplierID = " + req.query.SupplierID
+    setHeaders(res)
+    const sqlQuery = "DELETE FROM supplier WHERE SupplierID = " + req.body.SupplierID
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error)

@@ -1,8 +1,10 @@
 const response = require('./../response')
 
 const dbConnection = require('./../settings/dbConnection')
+const setHeaders = require('./../settings/setHeaders')
 
 exports.getPersonal = (req, res) => {
+    setHeaders(res)
     dbConnection.query('SELECT * FROM personal', (error, row, fields) => {
         if(error){
             console.log(error);
@@ -14,12 +16,13 @@ exports.getPersonal = (req, res) => {
 }
 
 exports.insertPersonal = (req, res) => {
+    setHeaders(res)
     const sqlQuery = "INSERT INTO personal (PositionID, PersonFIO, PersonExperience, PersonPhone, PersonBD) " 
-                   + "VALUES (" + req.query.PositionID + ", '" 
-                                + req.query.PersonFIO + "', " 
-                                + req.query.PersonExperience + ", '" 
-                                + req.query.PersonPhone + "', '" 
-                                + req.query.PersonBD + "')";
+                   + "VALUES (" + req.body.PositionID + ", '" 
+                                + req.body.PersonFIO + "', " 
+                                + req.body.PersonExperience + ", '" 
+                                + req.body.PersonPhone + "', '" 
+                                + req.body.PersonBD + "')";
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error);
@@ -31,12 +34,13 @@ exports.insertPersonal = (req, res) => {
 }
 
 exports.updatePersonal = (req, res) => {
-    const sqlQuery = "UPDATE personal SET PositionID = " + req.query.PositionID 
-                   + ", PersonFIO = '" + req.query.PersonFIO 
-                   + "', PersonExperience = " + req.query.PersonExperience 
-                   + ", PersonPhone = '" + req.query.PersonPhone 
-                   + "', PersonBD = '" + req.query.PersonBD 
-                   +"' WHERE PersonID = " + req.query.PersonID;
+    setHeaders(res)
+    const sqlQuery = "UPDATE personal SET PositionID = " + req.body.PositionID 
+                   + ", PersonFIO = '" + req.body.PersonFIO 
+                   + "', PersonExperience = " + req.body.PersonExperience 
+                   + ", PersonPhone = '" + req.body.PersonPhone 
+                   + "', PersonBD = '" + req.body.PersonBD 
+                   +"' WHERE PersonID = " + req.body.PersonID;
     dbConnection.query(sqlQuery, (error, results) => {
         if(error){
             console.log(error);
@@ -48,7 +52,8 @@ exports.updatePersonal = (req, res) => {
 }
 
 exports.deletePersonal = (req, res) => {
-    const sqlQuery = "DELETE FROM personal WHERE PersonID = " + req.query.PersonID;
+    setHeaders(res)
+    const sqlQuery = "DELETE FROM personal WHERE PersonID = " + req.body.PersonID;
     dbConnection.query(sqlQuery, (error, results) => {
         if(error) {
             console.log(error)

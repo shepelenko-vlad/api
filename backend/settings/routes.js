@@ -8,12 +8,12 @@ module.exports = (app) => {
     const productController = require('./../Controllers/ProductController')
     const serviceController = require('./../Controllers/ServicesController')
     const supplierController = require('./../Controllers/SuppliersController')
-    
+    const filesController = require('./../Controllers/FilesController')
     //Index Controller
     app.get('/',indexController.index)
 
     //Authorization Controller
-    app.get('/authorization', authorizationController.getlogin)
+    app.post('/authorization', authorizationController.getlogin)
 
     //Users Controller
     app.get('/users', usersController.getUsers)
@@ -56,4 +56,8 @@ module.exports = (app) => {
     app.post('/suppliers/add', supplierController.insertSupplier)
     app.put('/suppliers/update', supplierController.updateSupplier)
     app.delete('/suppliers/delete', supplierController.deleteSupplier)
+
+    //Files Controller
+    app.get('/getDocuments', filesController.getFiles)
+    app.post('/upload', filesController.uploadFile)
 }
