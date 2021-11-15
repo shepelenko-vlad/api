@@ -22,10 +22,10 @@ exports.getUsers = (req, res) => {
 
 exports.insertUser = (req, res) => {
     setHeaders(res)
-    var hashPass = crypto.createHash("md5").update(req.body.userPassword).digest("base64")
+    var hashPass = crypto.createHash("md5").update(req.body.UserPassword).digest("base64")
     const sqlQuery = "INSERT INTO users (PersonID, UserLogin, UserPassword) " 
-                   + "VALUES (" + req.body.personID +", '" 
-                                + req.body.userLogin + "', '" 
+                   + "VALUES (" + req.body.PersonID +", '" 
+                                + req.body.UserLogin + "', '" 
                                 + hashPass + "')";
     dbConnection.query(sqlQuery, (error, results) => {
         if(error) {
@@ -39,7 +39,7 @@ exports.insertUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
     setHeaders(res)
-    var hashPass = crypto.createHash("md5").update(req.body.userPassword).digest("base64")
+    var hashPass = crypto.createHash("md5").update(req.body.UserPassword).digest("base64")
     const sqlQuery = "UPDATE users SET users.PersonID = " + req.body.PersonID 
                    + ", users.UserLogin = '" + req.body.UserLogin 
                    + "', users.UserPassword = '" + hashPass 
@@ -57,7 +57,11 @@ exports.updateUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
     setHeaders(res)
-    const sqlQuery = "DELETE FROM users WHERE UserID = " + req.body.UserID;
+    console.log(res)
+    console.log(req)
+    console.log(req.body)
+    console.log(req.body.UserID)
+    const sqlQuery = "DELETE FROM users WHERE UserID = '" + req.params.UserID + "'";
     dbConnection.query(sqlQuery, (error, results) => {
         if(error) {
             console.log(error)
